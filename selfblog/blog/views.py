@@ -22,7 +22,7 @@ def post_list(request, category_id=None, tag_id=None):
     context = {
         'posts': queryset,
     }
-    return render(request, 'blog/list.html', context=context)
+    return render(request, 'blog/base.html', context=context)
 
 
 def post_detail(request, pk=None):
