@@ -119,7 +119,6 @@ TEMPLATES = [
         },
     },
 ]
-FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
 
 LOGGING = {
     'version': 1,
@@ -138,7 +137,6 @@ LOGGING = {
     },
     'loggers': {
         'django': {
-            'handlers': ['console'],
             'level': 'DEBUG',
         },
     },

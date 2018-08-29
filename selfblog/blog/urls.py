@@ -1,12 +1,12 @@
 # coding: utf-8
 from django.conf.urls import url
 
-from .views import post_list, post_detail
+from .views import IndexView, CategoryView, TagView, PostView
 
 
 urlpatterns = [
-    url(r'^$', post_list, name='index'),
-    url(r'^category/(?P<category_id>\d+)/', post_list, name='category'),
-    url(r'^tag/(?P<tag_id>\d+)/$', post_list, name='tag'),
-    url(r'^post/(?P<pk>\d+).html$', post_detail, name='detail'),
+    url(r'^$', IndexView.as_view(), name='index'),
+    url(r'^category/(?P<category_id>\d+)/', CategoryView.as_view(), name='category'),
+    url(r'^tag/(?P<tag_id>\d+)/$', TagView.as_view(), name='tag'),
+    url(r'^post/(?P<pk>\d+)/$', PostView.as_view(), name='detail')
 ]

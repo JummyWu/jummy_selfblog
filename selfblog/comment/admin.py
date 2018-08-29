@@ -11,6 +11,6 @@ from selfblog.custom_admin import BaseOwnerAdmin
 @admin.register(Comment, site=custom_site)
 class CommentAdmin(BaseOwnerAdmin):
     list_display = [
-        'post', 'nickname', 'content',
+        'target', 'nickname', 'content',
         'website', 'created_time'
     ]

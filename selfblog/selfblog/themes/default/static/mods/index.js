@@ -20,7 +20,7 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
   
   //阻止IE7以下访问
   if(device.ie && device.ie < 8){
-    layer.alert('如果您非得使用 IE 浏览器访问Fly社区，那么请使用 IE8+');
+    layer.alert('如果您非得使用 IE 浏览器访问the5fire vip论坛，那么请使用 IE8+');
   }
   
   layui.focusInsert = function(obj, str){
@@ -170,7 +170,7 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
               form.on('submit(uploadImages)', function(data){
                 var field = data.field;
                 if(!field.image) return image.focus();
-                layui.focusInsert(editor[0], 'img['+ field.image + '] ');
+                layui.focusInsert(editor[0], '!['+ field.image + ']('+ field.image +') ');
                 layer.close(index);
               });
             }
@@ -191,7 +191,7 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
               layer.tips('这根本不是个链接，不要骗我。', elem, {tips:1})
               return;
             }
-            layui.focusInsert(editor[0], ' a('+ val +')['+ val + '] ');
+            layui.focusInsert(editor[0], ' ['+ val +']('+ val + ') ');
             layer.close(index);
           });
         }
@@ -213,19 +213,25 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
         }
         ,yulan: function(editor){ //预览
           var content = editor.val();
+          if (!content.trim()) {
+              return
+          }
           
-          content = /^\{html\}/.test(content) 
-            ? content.replace(/^\{html\}/, '')
-          : fly.content(content);
+            fly.json('/topic/preview_md/',
+                {"content": content},
+                function(res) {
+                    var html = res.html;
+                    layer.open({
+                        type: 1
+                        ,title: '预览'
+                        ,shade: false
+                        ,area: ['100%', '100%']
+                        ,scrollbar: false
+                        ,content: '<div class="detail-body" style="margin:20px;">'+ html +'</div>'
+                    });
+                }
+            );
 
-          layer.open({
-            type: 1
-            ,title: '预览'
-            ,shade: false
-            ,area: ['100%', '100%']
-            ,scrollbar: false
-            ,content: '<div class="detail-body" style="margin:20px;">'+ content +'</div>'
-          });
         }
       };
       
@@ -252,61 +258,9 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
       .replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/'/g, '&#39;').replace(/"/g, '&quot;');
     }
 
-    //内容转义
-    ,content: function(content){
-      //支持的html标签
-      var html = function(end){
-        return new RegExp('\\n*\\['+ (end||'') +'(pre|hr|div|span|p|table|thead|th|tbody|tr|td|ul|li|ol|li|dl|dt|dd|h2|h3|h4|h5)([\\s\\S]*?)\\]\\n*', 'g');
-      };
-      content = fly.escape(content||'') //XSS
-      .replace(/img\[([^\s]+?)\]/g, function(img){  //转义图片
-        return '<img src="' + img.replace(/(^img\[)|(\]$)/g, '') + '">';
-      }).replace(/@(\S+)(\s+?|$)/g, '@<a href="javascript:;" class="fly-aite">$1</a>$2') //转义@
-      .replace(/face\[([^\s\[\]]+?)\]/g, function(face){  //转义表情
-        var alt = face.replace(/^face/g, '');
-        return '<img alt="'+ alt +'" title="'+ alt +'" src="' + fly.faces[alt] + '">';
-      }).replace(/a\([\s\S]+?\)\[[\s\S]*?\]/g, function(str){ //转义链接
-        var href = (str.match(/a\(([\s\S]+?)\)\[/)||[])[1];
-        var text = (str.match(/\)\[([\s\S]*?)\]/)||[])[1];
-        if(!href) return str;
-        var rel =  /^(http(s)*:\/\/)\b(?!(\w+\.)*(sentsin.com|layui.com))\b/.test(href.replace(/\s/g, ''));
-        return '<a href="'+ href +'" target="_blank"'+ (rel ? ' rel="nofollow"' : '') +'>'+ (text||href) +'</a>';
-      }).replace(html(), '\<$1 $2\>').replace(html('/'), '\</$1\>') //转移HTML代码
-      .replace(/\n/g, '<br>') //转义换行   
-      return content;
+    , content: function(content) {
+        return content;
     }
-    
-    //新消息通知
-    ,newmsg: function(){
-      var elemUser = $('.fly-nav-user');
-      if(layui.cache.user.uid !== -1 && elemUser[0]){
-        fly.json('/message/nums/', {
-          _: new Date().getTime()
-        }, function(res){
-          if(res.status === 0 && res.count > 0){
-            var msg = $('<a class="fly-nav-msg" href="javascript:;">'+ res.count +'</a>');
-            elemUser.append(msg);
-            msg.on('click', function(){
-              fly.json('/message/read', {}, function(res){
-                if(res.status === 0){
-                  location.href = '/user/message/';
-                }
-              });
-            });
-            layer.tips('你有 '+ res.count +' 条未读消息', msg, {
-              tips: 3
-              ,tipsMore: true
-              ,fixed: true
-            });
-            msg.on('mouseenter', function(){
-              layer.closeAll('tips');
-            })
-          }
-        });
-      }
-      return arguments.callee;
-    }
-    
   };
 
   //签到
@@ -498,7 +452,7 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
       ,shadeClose: true
       ,maxWidth: 10000
       ,skin: 'fly-layer-search'
-      ,content: ['<form action="http://cn.bing.com/search">'
+      ,content: ['<form action="/search/">'
         ,'<input autocomplete="off" placeholder="搜索内容，回车跳转" type="text" name="q">'
       ,'</form>'].join('')
       ,success: function(layero){
@@ -510,14 +464,10 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
           if(val.replace(/\s/g, '') === ''){
             return false;
           }
-          input.val('site:layui.com '+ input.val());
       });
       }
     })
   });
-
-  //新消息通知
-  fly.newmsg();
 
   //发送激活邮件
   fly.activate = function(email){
@@ -576,11 +526,6 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
     layui.use(layui.cache.page);
   }
   
-  //加载IM
-  if(!device.android && !device.ios){
-    //layui.use('im');
-  }
-
   //加载编辑器
   fly.layEditor({
     elem: '.fly-editor'
@@ -598,27 +543,6 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
     $('body').removeClass('site-mobile');
   });
 
-  //获取统计数据
-  $('.fly-handles').each(function(){
-    var othis = $(this);
-    $.get('/api/handle?alias='+ othis.data('alias'), function(res){
-      othis.html('（下载量：'+ res.number +'）');
-    })
-  });
-  
-  //固定Bar
-  util.fixbar({
-    bar1: '&#xe642;'
-    ,bgcolor: '#009688'
-    ,click: function(type){
-      if(type === 'bar1'){
-        layer.msg('打开 index.js，开启发表新帖的路径');
-        //location.href = 'jie/add.html';
-      }
-    }
-  });
-
   exports('fly', fly);
 
 });
-

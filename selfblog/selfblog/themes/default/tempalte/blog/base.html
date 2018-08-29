@@ -7,6 +7,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="{% static 'layui/css/layui.css' %}">
     <link rel="stylesheet" href="{% static 'css/global.css' %}">
+    {% block css %}
+    {% endblock %}
 </head>
 <body>
 
@@ -82,107 +84,44 @@
 <div class="layui-container">
 	<div class="layui-row layui-col-space15">
 		<div class="layui-col-md8">
-			<div class="fly-panel" style="margin-bottom: 0;">
-				<div class="fly-panel-title fly-filter">
-					<span class="fly-filter-right layui-hide-xs">
-						<a href="#" class="layui-this">按最新</a>
-					</span>
-				</div>
-				<ul class="fly-list">          
-					<li>
-						<a href="#" class="fly-avatar">
-							<img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg" alt="贤心">
-						</a>
-						<h2>
-							<a class="layui-badge">分享</a>
-							<a class="layui-badge">分享</a>
-							<a href="jie/detail.html">标题</a>
-						</h2>
-						<p>Django中有配置一套admin，能做简单的后台管理，当然，这套admin不怎么美观，而且功能上也有所欠缺，所以我们用了xadmin代替Django的adminDjango中有配置一套admin，能做简单的后台管理，当然，这套admin不怎么美观，而且功能上也有所欠缺，所以我们用了xadmin代替Django的admin</p>
-						<div class="fly-list-info">
-							<a href="user/home.html" link>
-								<cite>作者</cite>
-                <!--
-                <i class="iconfont icon-renzheng" title="认证信息：XXX"></i>
-                <i class="layui-badge fly-badge-vip">VIP3</i>
-            -->
-        </a>
-        <span>时间</span>
-
-        <span class="fly-list-kiss layui-hide-xs" title="悬赏飞吻"><i class="iconfont icon-kiss"></i> pv</span>
-        <!--<span class="layui-badge fly-badge-accept layui-hide-xs">已结</span>-->
-        <span class="fly-list-nums"> 
-        	<i class="iconfont icon-pinglun1" title="回答"></i> 评论数
-        </span>
-    </div>
-    <div class="fly-list-badge">
-    	<!--<span class="layui-badge layui-bg-red">精帖</span>-->
-    </div>
-</li>
-<li>
-	<a href="user/home.html" class="fly-avatar">
-		<img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg" alt="贤心">
-	</a>
-	<h2>
-		<a class="layui-badge">分享</a>
-		<a href="jie/detail.html">基于 layui 的极简社区页面模版</a>
-	</h2>
-	<div class="fly-list-info">
-		<a href="user/home.html" link>
-			<cite>贤心</cite>
-                <!--
-                <i class="iconfont icon-renzheng" title="认证信息：XXX"></i>
-                <i class="layui-badge fly-badge-vip">VIP3</i>
-            -->
-        </a>
-        <span>刚刚</span>
-
-        <span class="fly-list-kiss layui-hide-xs" title="悬赏飞吻"><i class="iconfont icon-kiss"></i> 60</span>
-        <!--<span class="layui-badge fly-badge-accept layui-hide-xs">已结</span>-->
-        <span class="fly-list-nums"> 
-        	<i class="iconfont icon-pinglun1" title="回答"></i> 66
-        </span>
-    </div>
-    <div class="fly-list-badge">
-    	<!--<span class="layui-badge layui-bg-red">精帖</span>-->
-    </div>
-</li>
-</ul>
-	<!-- <div class="fly-none">没有相关数据</div> -->
-<div style="text-align: center">
-
-	<div class="laypage-main"><span class="laypage-curr">1</span><a href="/jie/page/2/">2</a><a href="/jie/page/3/">3</a><a href="/jie/page/4/">4</a><a href="/jie/page/5/">5</a><span>…</span><a href="/jie/page/148/" class="laypage-last" title="尾页">尾页</a><a href="/jie/page/2/" class="laypage-next">下一页</a></div>
-	
-</div>
-
-</div>
-</div>
+            {% block content %}
+            {% endblock %}
+            </div>
 <div class="layui-col-md4">
-
+    {% for side in side_bars %}
 	<div class="fly-panel">
-		<h3 class="fly-panel-title">温馨通道</h3>
-		<ul class="fly-panel-main fly-list-static">
+        <h3 class="fly-panel-title">{{ side.title }}</h3>
+        <div class="fly-panel-main">
+            <p></p>
+        {% if side.display_type == 1 %}
+        {% autoescape off %}
+        {{ side.content }}
+        {% endautoescape %}
+        {% elif side.display_type == 2 %}
+		<ul>
+            {% for post in recently_posts %}
 			<li>
-				<a href="http://fly.layui.com/jie/4281/" target="_blank">layui 的 GitHub 及 Gitee (码云) 仓库，欢迎Star</a>
+                <a href="{% url 'detail' post.id %}" target="_blank">{{ post.title }}</a>
 			</li>
-			<li>
-				<a href="http://fly.layui.com/jie/5366/" target="_blank">
-					layui 常见问题的处理和实用干货集锦
-				</a>
-			</li>
-			<li>
-				<a href="http://fly.layui.com/jie/4281/" target="_blank">layui 的 GitHub 及 Gitee (码云) 仓库，欢迎Star</a>
-			</li>
-			<li>
-				<a href="http://fly.layui.com/jie/5366/" target="_blank">
-					layui 常见问题的处理和实用干货集锦
-				</a>
-			</li>
-			<li>
-				<a href="http://fly.layui.com/jie/4281/" target="_blank">layui 的 GitHub 及 Gitee (码云) 仓库，欢迎Star</a>
-			</li>
-		</ul>
+            {% endfor %}
+        </ul>
+        {% elif side.display_type == 3 %}
+		<ul>
+            {% for post in hot_posts %}
+            <li><a href="{% url 'detail' post.id %}">{{ post.title }}-{{ post.pv }}</a></li>
+            {% endfor %}
+        </ul>
+        {% elif side.display_type == 4 %}
+        <ul>
+            {% for comment in recently_comments %}
+            <li>{{ comment.context }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
 	</div>
+    {% endfor %}
+    <p></p>
+    </div>
 </div>
 </div>
 </div>
@@ -193,8 +132,36 @@
 
 <script src="{% static 'layui/layui.js' %}"></script>
 <script>
+    layui.config({
+        version: "3.0.0"
+        ,base: '../../static/mods/'
+    }).extend({
+        fly: 'index'
+    }).use(['fly', 'face'], function(){
+        var $ = layui.$
+            ,fly = layui.fly;
+        $('.jieda-accept').on('click', function(evt) {
+            var target = evt.target;
+            var adopt_id = target.dataset.id;
+            layer.confirm('采纳该答案?', {icon: 3, title:'提示'}, function(index){
+                //do something
+                $.ajax({
+                    method: 'POST',
+                    data: {
+                        adopt_id: adopt_id,
+                        csrfmiddlewaretoken: 'BugKeOx4tRKlN513qft9YdDMRHa7dlphSrqBAqDE6B9pkX95juEmOn2DXE8m89Oe'
+                    }
+                }).done(function(res){
+                    $('.adopt-' + adopt_id).show();
+                }).fail(function(res) {
+                    layer.msg(res.responseJSON.msg);
+                    return false;
+                });
 
+                layer.close(index);
+            });
+        });
+});
 </script>
-
 </body>
 </html>
