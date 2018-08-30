@@ -1,12 +1,12 @@
 # coding:utf-8
 from __future__ import unicode_literals
 
+from django.core.cache import cache
 from django.views.generic import ListView, DetailView
 
 from .models import Post, Category, Tag
 from config.models import SideBar
 from comment.models import Comment
-from comment.forms import CommentForm
 
 
 class CommonMixin(object):
@@ -27,13 +27,14 @@ class CommonMixin(object):
     def get_context_data(self, **kwargs):
         side_bars = SideBar.objects.filter(status=1)
         recently_posts = Post.objects.filter(status=1)[:10]
-        # hot_posts = Post.objects.filter(status=1).order_by('views'){[:10]
+        hot_posts = Post.objects.filter(status=1).order_by('-pv')[:10]
         recently_comments = Comment.objects.filter(status=1)[:10]
 
         kwargs.update({
             'side_bars': side_bars,
             'recently_posts': recently_posts,
             'recently_comments': recently_comments,
+            'hot_posts': hot_posts,
         })
         kwargs.update(self.get_category_context())
         return super(CommonMixin, self).get_context_data(**kwargs)
@@ -83,8 +84,24 @@ class PostView(DetailView):
     template_name = 'blog/detail.html'
     context_object_name = 'post'
 
-    def get_context_data(self, **kwargs):
-        kwargs.update({
-            'comment_form': CommentForm()
-        })
-        return super(PostView, self).get_context_data(**kwargs)
+    def get(self, request, *args, **kwargs):
+        response = super(PostView, self).get(request, *args, **kwargs)
+        self.pv_uv()
+        return response
+
+    def pv_uv(self):
+        sessionid = self.request.COOKIES.get('sessionid')
+        path = self.request.path
+
+        if not sessionid:
+            return
+
+        pv_key = 'pv:{}:{}'.format(sessionid, path)
+        if not cache.get(pv_key):
+            self.object.increse_pv()
+            cache.set(pv_key, 1, 60)
+
+        uv_key = 'uv:{}:{}'.format(sessionid, path)
+        if not cache.get(uv_key):
+            self.object.increse_uv()
+            cache.set(uv_key, 1, 60)

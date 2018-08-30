@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 import markdown
 
+from django.db.models import F
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -24,7 +25,8 @@ class Post(models.Model):
     is_markdown = models.BooleanField(verbose_name='是否使用markdown', default=True)
     status = models.IntegerField(default=1, choices=STATUS_ITEMS, verbose_name="状态")
     owner = models.ForeignKey(User, verbose_name="作者")
-
+    pv = models.PositiveIntegerField(default=0, verbose_name='pv')
+    uv = models.PositiveIntegerField(default=0, verbose_name='uv')
     created_time = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
 
     def status_show(self):
@@ -33,6 +35,12 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+    def increse_pv(self):
+        return type(self).objects.filter(id=self.id).update(pv=F('pv') + 1)
+
+    def increse_uv(self):
+        return type(self).objects.filter(id=self.id).update(pv=F('uv') + 1)
 
     def save(self, *args, **kwargs):
         if self.is_markdown:
