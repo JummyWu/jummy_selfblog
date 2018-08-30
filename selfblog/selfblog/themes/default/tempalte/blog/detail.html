@@ -1,5 +1,9 @@
 {% extends './base.html' %}
-{% load static %}
+{% load staticfiles %}
+
+{% block css %}
+<link href="{% static 'css/prettify.css' %}" rel="stylesheet">
+{% endblock %}
 
 {% block content %}
 
@@ -16,7 +20,9 @@
     <h1>{{ post.title }}</h1>
     <div class="fly-detail-info">
        <div class="fly-admin-box" data-id="123">
-           <span class="layui-btn layui-btn-xs jie-admin">{{ post.tag.name }}</span>
+           {% for tag in post.tags.all %}
+           <span class="layui-btn layui-btn-xs jie-admin">{{ tag.name }}</span>
+           {% endfor %}
        </div>
         <span class="fly-list-nums">
             <a href="#comment"><i class="iconfont" title="评论">&#xe60c;</i> 66</a>
@@ -41,7 +47,9 @@
     <fieldset class="layui-elem-field layui-field-title" style="text-align: center;">
         <legend>正文</legend>
     </fieldset>
-        {{ post.title }} 
+        {% autoescape off %}
+        {{ post.html }}
+        {% endautoescape %}
     </div>
 </div>
 
@@ -139,4 +147,10 @@
 </div>
 {% endblock %}
 {% block javascript %}
+<script src="{% static 'js/prettify.js' %}"></script>
+<script>
+window.onload = function(){
+    PR.prettyPrint();
+}
+</script>
 {% endblock %}

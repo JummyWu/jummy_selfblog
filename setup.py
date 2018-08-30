@@ -18,6 +18,7 @@ setup(
     install_requires=[
         'django==1.11.10',
         'python-decouple==3.1',
+        'markdown==2.6.11',
     ],
     scripts=[
         'selfblog/manage.py',
