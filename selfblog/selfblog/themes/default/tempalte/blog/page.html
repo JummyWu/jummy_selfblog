@@ -1,0 +1,33 @@
+<div class="laypage-main">
+    {% if first %}
+    <span class="laypage-curr">1</span>
+    {% endif %}
+    {% if left %}
+        {% if left_has_more %}
+        <span>...</span>
+        {% endif %}
+        {% for i in left %}
+            <a href="?page={{ i }}">{{ i }}</a>
+        {% endfor %}    
+    {% endif %}    
+    <span class="laypage-curr">{{ page_obj.number }}</span>
+    {% if right %}
+        {% for i in right %}
+            <a href="?page={{ i }}">{{ i }}</a>
+        {% endfor %}    
+        {% if right_has_more %}
+            <span>...</span>
+        {% endif %}
+    {% endif %}    
+    {% if last %}
+        <a href="?page={{ page_obj.number }}">{{ page_obj.number }}</a>
+    {% endif %}
+            
+    <!--<a href="/jie/page/4/">4</a>
+    <a href="/jie/page/5/">5</a>
+    <span>…</span>
+    <a href="/jie/page/148/" class="laypage-last" title="尾页">尾页</a>
+    <a href="/jie/page/2/" class="laypage-next">下一页</a> -->
+</div>
+
+

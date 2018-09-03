@@ -5,6 +5,7 @@ from django.core.cache import cache
 from django.views.generic import ListView, DetailView
 
 from .models import Post, Category, Tag
+from .view_mixins import PaginationMixin
 from config.models import SideBar
 from comment.models import Comment
 
@@ -40,11 +41,11 @@ class CommonMixin(object):
         return super(CommonMixin, self).get_context_data(**kwargs)
 
 
-class BaseDateView(CommonMixin, ListView):
+class BaseDateView(CommonMixin, PaginationMixin, ListView):
     model = Post
     template_name = 'blog/list.html'
     context_object_name = 'posts'
-    paginate_by = 3
+    paginate_by = 1
 
 
 class IndexView(BaseDateView):

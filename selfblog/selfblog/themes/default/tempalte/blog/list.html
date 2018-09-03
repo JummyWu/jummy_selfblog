@@ -2,6 +2,7 @@
 {% load staticfiles %}
 
 {% block content %}
+{% for post in posts %}
 <div class="fly-panel" style="margin-bottom: 0;">
     <div class="fly-panel-title fly-filter">
         <span class="fly-filter-right layui-hide-xs">
@@ -9,7 +10,6 @@
         </span>
     </div>
     <ul class="fly-list">          
-        {% for post in posts %}
         <li>
             <a href="#" class="fly-avatar">
                 <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg" alt="贤心">
@@ -34,14 +34,11 @@
         {% endfor %}
         
     </ul>
-    <!-- <div class="fly-none">没有相关数据</div> -->
     <div style="text-align: center">
-
-        <div class="laypage-main"><span class="laypage-curr">1</span><a href="/jie/page/2/">2</a><a href="/jie/page/3/">3</a><a href="/jie/page/4/">4</a><a href="/jie/page/5/">5</a><span>…</span><a href="/jie/page/148/" class="laypage-last" title="尾页">尾页</a><a href="/jie/page/2/" class="laypage-next">下一页</a></div>
-
+        {% include './page.html %}
     </div>
-
 </div>
+<!-- <div class="fly-none">没有相关数据</div> -->
 {% endblock %}
 
 {% block javascript %}
