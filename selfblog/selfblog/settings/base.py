@@ -23,6 +23,8 @@ INSTALLED_APPS = [
     'config',
     'selfblog',
 
+    'haystack',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -106,7 +108,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(BASE_DIR, THEME, 'tempalte')
+            os.path.join(BASE_DIR, THEME, 'tempaltes')
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -119,6 +121,15 @@ TEMPLATES = [
         },
     },
 ]
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'blog.whoosh_cn_backend.WhooshEngine',
+        'PATH': os.path.join(BASE_DIR, 'whoosh_index'),
+    },
+}
+HAYSTACK_SEARCH_RESULTS_PER_PAGE = 10
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 
 LOGGING = {
     'version': 1,

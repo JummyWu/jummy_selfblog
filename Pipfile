@@ -7,6 +7,9 @@ name = "pypi"
 django = "==1.11.10"
 python-decouple = "*"
 markdown = "*"
+whoosh = "*"
+django-haystack = "*"
+jieba = "*"
 
 [dev-packages]
 

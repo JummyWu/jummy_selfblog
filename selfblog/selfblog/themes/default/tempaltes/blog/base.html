@@ -134,7 +134,7 @@
 <script>
     layui.config({
         version: "3.0.0"
-        ,base: '../../static/mods/'
+        ,base: '{% static 'mods/' %}'
     }).extend({
         fly: 'index'
     }).use(['fly', 'face'], function(){

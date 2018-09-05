@@ -1,0 +1,31 @@
+{% load highlight %}
+<div class="fly-panel" style="margin-bottom: 0;">
+    <div class="fly-panel-title fly-filter">
+        <span class="fly-filter-right layui-hide-xs">
+            <a href="#" class="layui-this">按最新</a>
+        </span>
+    </div>
+    <ul class="fly-list">          
+        <li>
+            <a href="#" class="fly-avatar">
+                <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg" alt="贤心">
+            </a>
+            <h2>
+                <a class="layui-badge">{{ post.category.name }}</a>
+                <a href="{% url 'detail' post.id %}">{% highlight post.title with query %}</a>
+            </h2>
+            <p>{% highlight result.object.desc with query %}</p>
+            <div class="fly-list-info">
+                <a href="user/home.html" link>
+                    <cite>{{ post.owner }}</cite>
+                </a>
+                <span>{{ post.created_time }}</span>
+
+                <i class="iconfont" title="人气">&#xe60b;</i>{{ post.pv }}
+                <span class="fly-list-nums"> 
+                    <i class="iconfont icon-pinglun1" title="回答"></i> 评论数
+                </span>
+            </div>
+        </li>
+    </ul>
+</div>
