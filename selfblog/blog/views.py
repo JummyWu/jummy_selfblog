@@ -49,7 +49,7 @@ class BaseDateView(CommonMixin, PaginationMixin, ListView):
 
 
 class IndexView(BaseDateView):
-    pass
+    headline = '首页'
 
 
 class CategoryView(BaseDateView):

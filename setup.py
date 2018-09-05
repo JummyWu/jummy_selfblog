@@ -19,6 +19,9 @@ setup(
         'django==1.11.10',
         'python-decouple==3.1',
         'markdown==2.6.11',
+        'django-haystack==2.8.1',
+        'jieba==0.39',
+        'Whoosh==2.7.4',
     ],
     scripts=[
         'selfblog/manage.py',
