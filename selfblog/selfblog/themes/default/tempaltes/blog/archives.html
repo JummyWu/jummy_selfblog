@@ -1,0 +1,36 @@
+{% extends './base.html' %}
+
+{% block content %}
+<div class="fly-panel" style="margin-bottom: 0;padding-top: 20px;padding-left: 10px;">
+    {% regroup post by created_time.year as year_post_group %}
+    <ul class="layui-timeline">
+        {% for year in year_post_group %}
+        <li class="layui-timeline-item">
+            <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+            <div class="layui-timeline-content layui-text">
+                <h3 class="layui-timeline-title">{{ year.grouper}}年</h3>
+            </div>
+        </li>
+        {% regroup year.list by created_time.month as month_post_group %}
+            <ul class="layui-timeline">
+                {% for month in month_post_group %}
+                <li class="layui-timeline-item">
+                <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                    <div class="layui-timeline-content layui-text">
+                        <h4 class="layui-timeline-title"> {{ month.grouper }}月</h4>
+                    </div>
+                    <ul style="padding-left: 40px">
+                        {% for posts in month.list %}
+                        <li>
+                            <a href="{% url 'detail' posts.id %}">{{ posts.title }}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                {% endfor %}
+            </ul>
+            </li>
+            {% endfor %}
+    </ul>
+</div>
+{% endblock %}
