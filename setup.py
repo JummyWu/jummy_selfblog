@@ -22,6 +22,9 @@ setup(
         'django-haystack==2.8.1',
         'jieba==0.39',
         'Whoosh==2.7.4',
+        'redis==2.10.6',
+        'hiredis-0.2.0',
+        'django-redis-4.9.0',
     ],
     scripts=[
         'selfblog/manage.py',

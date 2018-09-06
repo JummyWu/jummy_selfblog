@@ -10,6 +10,9 @@ markdown = "*"
 whoosh = "*"
 django-haystack = "*"
 jieba = "*"
+redis = "*"
+django-redis = "*"
+hiredis = "*"
 
 [dev-packages]
 
