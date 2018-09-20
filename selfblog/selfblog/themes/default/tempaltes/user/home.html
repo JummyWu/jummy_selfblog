@@ -1,0 +1,22 @@
+{% extends '../blog/base.html' %}
+{% block content %}
+<div class="fly-home fly-panel" style="background-image: url();">
+    <img src="{{ user.profile.avatar }}" alt="{{ user.username }}">
+    <h1>
+        ({{ user.username }})
+    </h1>
+    <p class="fly-home-info">
+        <i class="iconfont icon-shijian"></i>
+        <span>{{ user.profile.created_time }}</span>
+        <i class="iconfont icon-chengshi"></i>
+        <span>{{ user.profile.location }}</span>
+    </p>
+    <p class="fly-home-sign">
+        博客地址:
+        <a href="">{{ user.profile.blog }}</a>
+    </p>
+    <p class="fly-home-sign">{{ user.profile.bio }}</p>
+    <p class="fly-home-sign">GitHub地址:{{ user.profile.html }}</p>
+
+</div>
+{% endblock %}

@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from django.core.cache import cache
 from django.views.generic import ListView, DetailView
+from django.db.models import Avg
 
 from .models import Post, Category, Tag
 from .view_mixins import PaginationMixin
@@ -103,6 +104,24 @@ class ArchivesView(ListView):
         month = self.kwargs.get('month')
         return super(ArchivesView, self).get_qeryset().filter(created_time__year=year,
                                                               created_time__month=month)
+
+
+class CategoriesView(ListView):
+    model = Category
+    template_name = 'blog/category.html'
+    context_object_name = 'category'
+
+    def get_queryser(self):
+        qs = super(CategoriesView, self).get_queryset()
+        qs = Post.objects.all().aggregate(Avg(Category))
+        import pdb;pdb.set_trace()
+        return qs
+
+
+class TagsView(ListView):
+    model = Tag
+    template_name = 'blog/tag.html'
+    context_object_name = 'tag'
 
 
 class PostView(DetailView):

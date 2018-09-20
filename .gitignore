@@ -108,3 +108,6 @@ tmp/
 
 #whoosh_index
 whoosh_index/
+
+#.DS_Store
+.DS_Store

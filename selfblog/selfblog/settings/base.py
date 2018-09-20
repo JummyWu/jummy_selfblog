@@ -22,6 +22,7 @@ INSTALLED_APPS = [
     'comment',
     'config',
     'selfblog',
+    'user',
 
     'haystack',
 
@@ -122,6 +123,12 @@ TEMPLATES = [
     },
 ]
 
+# github
+GITHUB_CLIENT_ID=config('GITHUBID')
+GITHUB_CLIENT_SECRET=config('GITHUBSECRET')
+GITHUB_ACCESS_TOKEN_URL = 'https://github.com/login/oauth/access_token'
+GITHUB_USER_API = 'https://api.github.com/user?access_token='
+
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'blog.whoosh_cn_backend.WhooshEngine',
@@ -130,6 +137,8 @@ HAYSTACK_CONNECTIONS = {
 }
 HAYSTACK_SEARCH_RESULTS_PER_PAGE = 10
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+
+LOGOUT_REDIRECT_URL = '/'
 
 LOGGING = {
     'version': 1,
