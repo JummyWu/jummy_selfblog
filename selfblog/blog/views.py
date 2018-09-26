@@ -7,7 +7,7 @@ from django.db.models import Avg
 
 from .models import Post, Category, Tag
 from .view_mixins import PaginationMixin
-from comment.forms import PostCommentForm
+from comment.views import CommentShowMixin
 from config.models import SideBar
 
 
@@ -121,7 +121,7 @@ class TagsView(ListView):
     context_object_name = 'tag'
 
 
-class PostView(DetailView):
+class PostView(CommonMixin, CommentShowMixin, DetailView):
     model = Post
     template_name = 'blog/detail.html'
     context_object_name = 'post'
@@ -147,11 +147,3 @@ class PostView(DetailView):
         if not cache.get(uv_key):
             self.object.increse_uv()
             cache.set(uv_key, 1, 60)
-
-    def get_context_data(self, **kwargs):
-        content = PostCommentForm()
-        content.fields['article'].widget.attrs['value']=self.kwargs['pk']
-        kwargs.update({
-            'comment_form': content,
-        })
-        return super(PostView, self).get_context_data(**kwargs)
