@@ -20,7 +20,7 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
   
   //阻止IE7以下访问
   if(device.ie && device.ie < 8){
-    layer.alert('如果您非得使用 IE 浏览器访问the5fire vip论坛，那么请使用 IE8+');
+    layer.alert('如果您非得使用 IE 浏览器访问jummy博客，那么请使用 IE8+');
   }
   
   layui.focusInsert = function(obj, str){

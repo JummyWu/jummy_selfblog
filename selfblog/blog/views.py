@@ -7,8 +7,8 @@ from django.db.models import Avg
 
 from .models import Post, Category, Tag
 from .view_mixins import PaginationMixin
+from comment.forms import PostCommentForm
 from config.models import SideBar
-from comment.models import Comment
 
 
 def cache_it(func):
@@ -43,12 +43,10 @@ class CommonMixin(object):
         side_bars = SideBar.objects.filter(status=1)
         recently_posts = Post.objects.filter(status=1)[:10]
         hot_posts = Post.objects.filter(status=1).order_by('-pv')[:10]
-        recently_comments = Comment.objects.filter(status=1)[:10]
 
         kwargs.update({
             'side_bars': side_bars,
             'recently_posts': recently_posts,
-            'recently_comments': recently_comments,
             'hot_posts': hot_posts,
         })
         kwargs.update(self.get_category_context())
@@ -114,7 +112,6 @@ class CategoriesView(ListView):
     def get_queryser(self):
         qs = super(CategoriesView, self).get_queryset()
         qs = Post.objects.all().aggregate(Avg(Category))
-        import pdb;pdb.set_trace()
         return qs
 
 
@@ -150,3 +147,9 @@ class PostView(DetailView):
         if not cache.get(uv_key):
             self.object.increse_uv()
             cache.set(uv_key, 1, 60)
+
+    def get_context_data(self, **kwargs):
+        kwargs.update({
+            'comment_form': PostCommentForm(),
+        })
+        return super(PostView, self).get_context_data(**kwargs)

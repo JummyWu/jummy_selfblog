@@ -1,17 +1,27 @@
-# coding:utf-8
-from __future__ import unicode_literals
-
+# coding: utf-8
 from django import forms
+from django.forms import HiddenInput
 
-from .models import Comment
+from .models import PostComment, PostCommentReply
 
 
-class CommentForm(forms.ModelForm):
-    def clean_content(self):
-        content = self.cleaned_data.get("content")
-        if len(content) < 10:
-            raise forms.ValidationError('你怎么这么短阿')
-
+class PostCommentForm(forms.ModelForm):
     class Meta:
-        model = Comment
-        fields = []
+        model = PostComment
+        fields = ['content', 'article']
+        widgets = {
+            'article': HiddenInput,
+            'content': forms.Textarea(attrs={'placeholder': '请输入评论内容', 'id': 'L_content',
+                'lay-verify': 'required', 'class': 'layui-textarea fly-editor',
+                'style': 'height: 150px;'})
+        }
+
+
+class PostCommentReplyForm(forms.ModelForm):
+    class Meta:
+        model = PostCommentReply
+        fields = ['content', 'comment', 'reply']
+        widgets = {
+            'comment': HiddenInput,
+            'reply': HiddenInput,
+        }

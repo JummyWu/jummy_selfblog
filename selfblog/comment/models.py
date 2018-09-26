@@ -1,21 +1,37 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 from django.db import models
+from django.contrib.auth.models import User
+from blog.models import Post
 
 
-class Comment(models.Model):
-    STATUS_ITEMS = (
-        (1, '正常'),
-        (2, '删除'),
-    )
-    target = models.CharField(max_length=200, null=True, verbose_name='评论目标')
-    content = models.CharField(max_length=2000, verbose_name="内容")
-    nickname = models.CharField(max_length=50, verbose_name="昵称")
-    website = models.URLField(verbose_name="网站")
-    email = models.EmailField(verbose_name="邮箱")
-    status = models.PositiveIntegerField(default=1, choices=STATUS_ITEMS, verbose_name='状态')
-    created_time = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
+class BaseComment(models.Model):
+    '基础评论模型'
+    content = models.TextField('评论', max_length=500)
+    time = models.DateTimeField('评论时间', auto_now_add=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='评论者')
+
+    def __str__(self):
+        return self.content[:10]
 
     class Meta:
-        verbose_name = verbose_name_plural = "评论"
+        abstract = True
+
+
+class PostComment(BaseComment):
+    '文章评论'
+    article = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments', verbose_name='评论文章')
+
+    class Meta:
+        ordering = ['-time']
+        verbose_name = '文章评论'
+        verbose_name_plural = '文章评论'
+
+
+class PostCommentReply(BaseComment):
+    '文章评论回复(二级评论)'
+    comment = models.ForeignKey(PostComment, on_delete=models.CASCADE, related_name='replies', verbose_name='一级评论')
+    reply = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE, verbose_name='回复对象')
+
+    class Meta:
+        ordering = ['time']
+        verbose_name = '文章评论回复'
+        verbose_name_plural = '文章评论回复'
