@@ -149,7 +149,9 @@ class PostView(DetailView):
             cache.set(uv_key, 1, 60)
 
     def get_context_data(self, **kwargs):
+        content = PostCommentForm()
+        content.fields['article'].widget.attrs['value']=self.kwargs['pk']
         kwargs.update({
-            'comment_form': PostCommentForm(),
+            'comment_form': content,
         })
         return super(PostView, self).get_context_data(**kwargs)
