@@ -84,6 +84,7 @@
                     {% for file in comment_form %}
                     {{ file }}
                     {% endfor %}
+                    <input type='hidden' name='post' value='{{ request.path }}'/>
                 </div>
             </div>
             <div class="layui-form-item">
