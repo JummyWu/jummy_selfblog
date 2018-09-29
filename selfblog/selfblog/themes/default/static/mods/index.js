@@ -217,7 +217,7 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
               return
           }
           
-            fly.json('/topic/preview_md/',
+            fly.json('/preview_md/',
                 {"content": content},
                 function(res) {
                     var html = res.html;

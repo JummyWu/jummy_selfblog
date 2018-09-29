@@ -3,62 +3,31 @@
         <legend>评论</legend>
     </fieldset>
     <ul class="jieda" id="jieda">
+        {% if comment_list %}
         {% for comment in comment_list %}
-            {{ comment.content }}
-            {{ comment.user }}
-        {% endfor %}
         <li data-id="111" class="jieda-daan">
             <a name="item-1111111111"></a>
             <div class="detail-about detail-about-reply">
-                <a class="fly-avatar" href="">
-                    <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg" alt=" ">
+                <a class="fly-avatar" href="{% url 'user:home' %}">
+                    <img src="{{ comment.user.profile.avatar }}" alt="{{ comment.user }}">
                 </a>
                 <div class="fly-detail-user">
                     <a href="" class="fly-link">
-                        <cite>贤心</cite>
+                        <cite>{{ comment.user }}</cite>
                     </a>
                 </div>
                 <div class="detail-hits">
-                    <span>2017-11-30</span>
+                    <span>{{ comment.time }}</span>
                 </div>
             </div>
             <div class="detail-body jieda-body photos">
-                <p>香菇那个蓝瘦，这是一条被采纳的回帖</p>
+                {% autoescape off %}
+                {{ comment.html }}
+                {% endautoescape %}
+
             </div>
             <div class="jieda-reply">
                 <span class="jieda-zan zanok" type="zan">
-                    <i class="iconfont icon-zan"></i>
-                    <em>66</em>
-                </span>
-                <span type="reply">
-                    <i class="iconfont icon-svgmoban53"></i>
-                    回复
-                </span>
-                <div class="jieda-admin">
-                </div>
-            </div>
-        </li>
-
-        <li data-id="111">
-            <a name="item-1111111111"></a>
-            <div class="detail-about detail-about-reply">
-                <a class="fly-avatar" href="">
-                    <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg" alt=" ">
-                </a>
-                <div class="fly-detail-user">
-                    <a href="" class="fly-link">
-                        <cite>贤心</cite>
-                    </a>
-                </div>
-                <div class="detail-hits">
-                    <span>2017-11-30</span>
-                </div>
-            </div>
-            <div class="detail-body jieda-body photos">
-                <p>蓝瘦那个香菇，这是一条没被采纳的回帖</p>
-            </div>
-            <div class="jieda-reply">
-                <span class="jieda-zan" type="zan">
                     <i class="iconfont icon-zan"></i>
                     <em>0</em>
                 </span>
@@ -67,13 +36,14 @@
                     回复
                 </span>
                 <div class="jieda-admin">
-                    <span type="edit"></span>
-                    <span type="del"></span>
                 </div>
             </div>
         </li>
+        {% endfor %}
+        {% else %}
         <!-- 无数据时 -->
-        <!-- <li class="fly-none">消灭零回复</li> -->
+         <li class="fly-none">消灭零回复</li>
+         {% endif %}
     </ul>
     <div class="layui-form layui-form-pane">
         <form action="/comment/" method="POST">
@@ -88,7 +58,7 @@
                 </div>
             </div>
             <div class="layui-form-item">
-                <button class="layui-btn" lay-filter="*" lay-submit>提交回复</button>
+                <button class="layui-btn"  lay-submit>提交回复</button>
             </div>
        </form>
     </div>

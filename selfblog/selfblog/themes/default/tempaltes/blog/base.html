@@ -134,8 +134,7 @@
                     method: 'POST',
                     data: {
                         adopt_id: adopt_id,
-                        csrfmiddlewaretoken: 'BugKeOx4tRKlN513qft9YdDMRHa7dlphSrqBAqDE6B9pkX95juEmOn2DXE8m89Oe'
-                    }
+                        csrfmiddlewaretoken: '{{ csrf_token }}'                       }
                 }).done(function(res){
                     $('.adopt-' + adopt_id).show();
                 }).fail(function(res) {
