@@ -23,5 +23,6 @@ urlpatterns = [
     url(r'^cus_admin/', custom_site.urls),
     url(r'', include('blog.urls')),
     url(r'', include('comment.urls')),
+    url(r'', include('config.urls')),
     url(r'^user/', include('user.urls')),
 ]

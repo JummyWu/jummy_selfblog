@@ -13,10 +13,12 @@
     </p>
     <p class="fly-home-sign">
         博客地址:
-        <a href="">{{ user.profile.blog }}</a>
+        <a href="https://{{ user.profile.blog }}" target="_blank">{{ user.profile.blog }}</a>
     </p>
     <p class="fly-home-sign">{{ user.profile.bio }}</p>
-    <p class="fly-home-sign">GitHub地址:{{ user.profile.html }}</p>
+    <p class="fly-home-sign">GitHub地址:
+    <a href="{{ user.profile.html }}" target="_blank">{{ user.profile.html }}</a>
+    </p>
 
 </div>
 {% endblock %}

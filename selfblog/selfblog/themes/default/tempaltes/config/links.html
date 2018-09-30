@@ -1,0 +1,27 @@
+{% extends '../blog/base.html' %}
+
+{% block content %}
+<div class="fly-panel fly-panel-user" pad20>
+    <div class="layui-tab layui-tab-brief" lay-filter="user">
+{% if links %}
+<table class='layui-table' lay-skin='line'>
+<tr>
+    <th>LOGO</th>
+    <th>网站</th>
+</tr>
+{% for link in links %}
+<tr>
+    <th><img height=25 src="{{ link.href }}/favicon.ico"></th>
+    <th><a href="{{ link.href }}" target="_blank">{{ link.title }}</a></th>
+</tr>
+</table>
+<div style='padding-top: 30px;'>
+    <p>想添加友联，需要先换友联，或者联系我</p>
+</div>
+{% endfor %}
+{% else %}
+没有友联，来做第一个如何
+{% endif %}
+    </div>
+</div>
+{% endblock %}
