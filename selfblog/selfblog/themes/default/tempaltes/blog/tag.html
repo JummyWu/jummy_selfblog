@@ -5,9 +5,7 @@
 <div class="fly-panel detail-box">
     <ul class="fly-list">
         {% for tag in tag %}
-            <li>
                 <a href="{% url 'tag' tag.id %}">{{ tag.name }}</a>
-            </li>
         {% endfor %}
     </ul>
 </div>

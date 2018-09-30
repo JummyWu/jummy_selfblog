@@ -16,6 +16,8 @@ hiredis = "*"
 pillow = "*"
 requests = "*"
 "jummy blog" = {editable = true, file = "file:///Users/jummy/2018/jummy_selfblog"}
+wheel = "*"
+"fabric3" = "*"
 
 [dev-packages]
 

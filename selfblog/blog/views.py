@@ -3,7 +3,6 @@ from __future__ import unicode_literals
 
 from django.core.cache import cache
 from django.views.generic import ListView, DetailView
-from django.db.models import Avg
 
 from .models import Post, Category, Tag
 from .view_mixins import PaginationMixin
@@ -109,10 +108,12 @@ class CategoriesView(ListView):
     template_name = 'blog/category.html'
     context_object_name = 'category'
 
-    def get_queryser(self):
-        qs = super(CategoriesView, self).get_queryset()
-        qs = Post.objects.all().aggregate(Avg(Category))
-        return qs
+    def get_context_data(self, **kwargs):
+        category = Category.post_set
+        kwargs.update({
+            'cate': category,
+        })
+        return super(CategoriesView, self).get_context_data(**kwargs)
 
 
 class TagsView(ListView):

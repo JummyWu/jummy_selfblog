@@ -1,9 +1,12 @@
 {% extends './base.html' %}
 
 {% block content %}
-
-{% for cate in category %}
-<p>{{ cate.name }}</p>
+<div class="fly-panel detail-box">
+    <ul class="fly-list">
+{% for cates in category %}
+<p>{{ cates.name }}</p>
 {% endfor %}
+    </ul>
+</div>
 
 {% endblock %}
